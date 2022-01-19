@@ -60,7 +60,7 @@ def view_tasks():
     for task_data in user_data:
         task_access = task_data["userId"]
         if task_access == userId_input:
-            task = task_data["description"]
+            task = task_data["name"]
             task_list.append(task)
             
     print(f"Here is your task list: \n {task_list}")
@@ -102,7 +102,7 @@ def view_incomplete():
     for task_data in user_data:
         task_access = task_data["userId"]
         task_status = task_data["completed"]
-        task_des = task_data["description"]
+        task_des = task_data["name"]
         if task_access == userId_input and task_status == False:
             completed_list.append(task_des)
 
@@ -114,7 +114,6 @@ def create_task():
     userId_input = input("Please enter your user id: \n")
     task_name = input("Please enter your task: \n")
     task_des = input("Please enter a description of your task: \n")
-    
     user_flag = input("Is your task already completed? Yes or No\n")
     completed_flag = False
     if user_flag == "Yes":
@@ -125,7 +124,7 @@ def create_task():
         "name": task_name,
         "description": task_des
     }
-    
+
     task_post = requests.post(task_url, json=body)
     
     if task_post.status_code == 200:
@@ -133,10 +132,86 @@ def create_task():
 
 
 # Function 6) Update an existing task (PATCH/PUT)
-# def update_task():
+def update_task():
+    task_url = "http://demo.codingnomads.co:8080/tasks_api/tasks"
+    task_request = requests.get(task_url)
+    data = task_request.text
+    parsed_json = json.loads(data)
+    id = int()
+    description = str()
+    userId_input = int(input("Please enter your user Id: \n"))
+
+    task_list = []
+    user_data = parsed_json["data"]
+    
+    for task_data in user_data:
+        task_access = task_data["userId"]
+        if task_access == userId_input:
+            task = task_data["name"]
+            task_list.append(task)
+            
+    print(f"Here is your task list: \n {task_list}")
+    
+    update_task = input("Which task would you like to update to compplete?")
+
+    # Get id based on userId and name
+
+    for task in user_data:
+        task_access = task["userId"]
+        task_name = task["name"]
+        if task_access == userId_input and task_name == update_task:
+            id = task["id"]
+            description = task["description"]
+
+    body = {
+        "id": id,
+        "userId": userId_input,
+        "name": update_task,
+        "description": description,
+        "completed": True
+    }
+    
+    task_put = requests.put(task_url, json=body)
+    
+    if task_put.status_code == 200:
+        print("You have updated a task!")
+
+
 
 # Function 7) Delete a task (DELETE)
-# def delete_task():
+def delete_task():
+    task_url = "http://demo.codingnomads.co:8080/tasks_api/tasks"
+    task_request = requests.get(task_url)
+    data = task_request.text
+    parsed_json = json.loads(data)
+    id = int()
+    
+    userId_input = int(input("Please enter your user Id: \n"))
+
+    task_list = []
+    user_data = parsed_json["data"]
+    
+    for task_data in user_data:
+        task_access = task_data["userId"]
+        if task_access == userId_input:
+            task = task_data["name"]
+            task_list.append(task)
+            
+    print(f"Here is your task list: \n {task_list}")
+
+    delete_task = input("Which task would you like to delete?")
+
+    # Get is for task to be deleted
+    for task in user_data:
+        task_access = task["userId"]
+        task_name = task["name"]
+        if task_access == userId_input and task_name == delete_task:
+            id = task["id"]
+        
+    response = requests.delete(task_url + "/" + str(id))
+    if response.status_code == 200:
+        print("You have deleted a task!")
+
 
 # Function asking which task to complete
 def which_task():
