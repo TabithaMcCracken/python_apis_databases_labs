@@ -17,10 +17,20 @@ It is your responsibility to build out the application to handle all menu option
 import requests
 import json
 
+# We need:
+# 1 Function to get tasks from url
 # 7 Functions for each action
-# Function asking which task to complete
-# Call which_task()
-# Loop to ask to complete another task
+# 1 Function asking which task to complete
+# To call which_task() function to start the program
+# While Loop to ask to complete another task
+
+# Function to get task data
+def get_tasks():
+    task_url = "http://demo.codingnomads.co:8080/tasks_api/tasks"
+    task_request = requests.get(task_url)
+    data = task_request.text
+    parsed_json = json.loads(data)
+    return parsed_json
 
 # Function 1) Create a new account (POST)
 def new_account():
@@ -37,6 +47,7 @@ def new_account():
     }
     # Post info, check status and give user their user id
     account_post = requests.post(user_url, json=body)
+    
     print(f"Response Code: {account_post.status_code}")
     if account_post.status_code == 200:
         print("Congratulations you have created a new account!")
@@ -47,16 +58,16 @@ def new_account():
 
 # Function 2) View all your tasks (GET)
 def view_tasks():
-    task_url = "http://demo.codingnomads.co:8080/tasks_api/tasks"
-    task_request = requests.get(task_url)
-    data = task_request.text
-    parsed_json = json.loads(data)
+    # Get task data
+    task_data = get_tasks()
+    # Get only "data"
+    user_data = task_data["data"]
 
     userId_input = int(input("Please enter your user Id: \n"))
 
     task_list = []
-    user_data = parsed_json["data"]
     
+
     for task_data in user_data:
         task_access = task_data["userId"]
         if task_access == userId_input:
@@ -67,20 +78,19 @@ def view_tasks():
 
 # Function 3) View your completed tasks (GET)
 def view_completed():
-    task_url = "http://demo.codingnomads.co:8080/tasks_api/tasks"
-    task_request = requests.get(task_url)
-    data = task_request.text
-    parsed_json = json.loads(data)
+    # Get task data
+    task_data = get_tasks()
+    # Get only "data"
+    user_data = task_data["data"]
 
     userId_input = int(input("Please enter your us Id: \n"))
 
     completed_list = []
-    user_data = parsed_json["data"]
 
     for task_data in user_data:
         task_access = task_data["userId"]
         task_status = task_data["completed"]
-        task_des = task_data["description"]
+        task_des = task_data["name"]
         if task_access == userId_input and task_status == True:
             completed_list.append(task_des)
 
@@ -89,15 +99,14 @@ def view_completed():
 
 # Function 4) View only your incomplete tasks (GET)
 def view_incomplete():
-    task_url = "http://demo.codingnomads.co:8080/tasks_api/tasks"
-    task_request = requests.get(task_url)
-    data = task_request.text
-    parsed_json = json.loads(data)
+    # Get task data
+    task_data = get_tasks()
+    # Get only "data"
+    user_data = task_data["data"]
 
     userId_input = int(input("Please enter your us Id: \n"))
 
     completed_list = []
-    user_data = parsed_json["data"]
 
     for task_data in user_data:
         task_access = task_data["userId"]
@@ -122,7 +131,8 @@ def create_task():
     body = {
         "userId": userId_input,
         "name": task_name,
-        "description": task_des
+        "description": task_des,
+        "completed": completed_flag
     }
 
     task_post = requests.post(task_url, json=body)
@@ -133,16 +143,16 @@ def create_task():
 
 # Function 6) Update an existing task (PATCH/PUT)
 def update_task():
-    task_url = "http://demo.codingnomads.co:8080/tasks_api/tasks"
-    task_request = requests.get(task_url)
-    data = task_request.text
-    parsed_json = json.loads(data)
+    # Get task data
+    task_data = get_tasks()
+    # Get only "data"
+    user_data = task_data["data"]
+
     id = int()
     description = str()
     userId_input = int(input("Please enter your user Id: \n"))
 
     task_list = []
-    user_data = parsed_json["data"]
     
     for task_data in user_data:
         task_access = task_data["userId"]
@@ -153,6 +163,12 @@ def update_task():
     print(f"Here is your task list: \n {task_list}")
     
     update_task = input("Which task would you like to update to compplete?")
+    user_flag = input("Is your task already completed? Yes or No\n")
+    completed_flag = False # Defaults to not completed
+    if user_flag == "Yes":
+        completed_flag = True
+    elif user_flag == "No":
+        completed_flag = False
 
     # Get id based on userId and name
 
@@ -168,9 +184,9 @@ def update_task():
         "userId": userId_input,
         "name": update_task,
         "description": description,
-        "completed": True
+        "completed": completed_flag
     }
-    
+    task_url = "http://demo.codingnomads.co:8080/tasks_api/tasks"
     task_put = requests.put(task_url, json=body)
     
     if task_put.status_code == 200:
@@ -251,7 +267,7 @@ which_task()
 # Should i put this into a function?
 end_task_flag = False
 while end_task_flag == False:
-    another_task = input("Would you like to complete another task? Yes or No\n")
+    another_task = input("Would you like to complete another option? Yes or No\n")
     if another_task == "Yes":
         which_task()
         end_task_flag = False

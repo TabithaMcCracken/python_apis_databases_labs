@@ -11,3 +11,19 @@ BONUS: Using your script, create a folder and download the main 'front_default'
        Name the files appropriately using the name data from your response.
 
 '''
+import requests
+import json
+
+pokemon_list = []
+
+base_url = "https://pokeapi.co/api/v2/pokemon/"
+r = requests.get(base_url)
+data = r.json()
+
+print(data)
+
+for pokemon in data:
+       access = pokemon[0]
+       pokemon_list.append(access)
+
+print(pokemon_list)
