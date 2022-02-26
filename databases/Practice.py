@@ -1,12 +1,13 @@
 import sqlalchemy
 from pprint import pprint
 
-engine = sqlalchemy.create_engine('mysql+pymysql://root:levi8811@localhost/sakila')
+engine = sqlalchemy.create_engine('mysql+pymysql://username:password@localhost/sakila')
 connection = engine.connect()
 metadata = sqlalchemy.MetaData()
 
 new_table = sqlalchemy.Table('new_table', metadata, autoload=True, autoload_with=engine)
 
+# Adding multiple entries into a database
 query = sqlalchemy.insert(new_table)
 new_records = [{'id':'2', 'name':'Jane Doe', 'salary':'50000.00'},
                 {'id':'3', 'name':'Johnny Appleseed', 'salary':'45000.00'}]
