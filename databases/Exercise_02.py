@@ -14,3 +14,23 @@ Consider each of the tasks below as a separate database query. Using SQLAlchemy,
 - Using one of the statements above, add a ORDER BY statement of your choice
 
 '''
+
+from pprint import pprint
+from unicodedata import category
+import sqlalchemy
+
+engine = sqlalchemy.create_engine('mysql+pymysql://username:password@localhost/sakila')
+connection = engine.connect()
+metadata = sqlalchemy.MetaData()
+
+# Select all the actors with the first name of your choice
+actor_table = sqlalchemy.Table('actor', metadata, autoload=True, autoload_with=engine)
+
+query = sqlalchemy.select(actor_table).where(actor_table.columns.first_name == 'Matthew')
+result_proxy = connection.execute(query)
+
+for actor in result_proxy:
+    print(actor)
+
+
+# Select all the actors and the films they have been in

@@ -1,28 +1,47 @@
+from turtle import clear
 import sqlalchemy
 from pprint import pprint
+from actor import Actor
 
 engine = sqlalchemy.create_engine('mysql+pymysql://username:password@localhost/sakila')
 connection = engine.connect()
 metadata = sqlalchemy.MetaData()
 
-new_table = sqlalchemy.Table('new_table', metadata, autoload=True, autoload_with=engine)
+actor = sqlalchemy.Table('actor', metadata, autoload=True, autoload_with=engine)
+
+query = sqlalchemy.select([actor])
+result_proxy = connection.execute(query)
+
+actor_list = []
+for result in result_proxy:
+    new_actor = Actor(result['actor_id'], result['first_name'], result['last_name'], result['last_update'])
+    actor_list.append(new_actor)
+
+for actor in actor_list:
+    print(actor)
+
+# Delete 
+# new_table = sqlalchemy.Table('new_table', metadata, autoload=True, autoload_with=engine)
+# query = sqlalchemy.delete(new_table).where(new_table.columns.salary < 100000.00)
+# results = connection.execute(query)
+
+# Update an entry
+# new_table = sqlalchemy.Table('new_table', metadata, autoload=True, autoload_with=engine)
+# query = sqlalchemy.update(new_table).values(salary=100000.00).where(new_table.columns.id == 1)
+# result_proxy = connection.execute(query)
+
 
 # Adding multiple entries into a database sakila
-query = sqlalchemy.insert(new_table)
-new_records = [{'id':'2', 'name':'Jane Doe', 'salary':'50000.00'},
-                {'id':'3', 'name':'Johnny Appleseed', 'salary':'45000.00'}]
-
-result_proxy = connection.execute(query, new_records)
-
-
-
+# query = sqlalchemy.insert(new_table)
+# new_records = [{'id':'2', 'name':'Jane Doe', 'salary':'50000.00'},
+#                 {'id':'3', 'name':'Johnny Appleseed', 'salary':'45000.00'}]
+# result_proxy = connection.execute(query, new_records)
 
 # Join
 # actor = sqlalchemy.Table('actor', metadata, autoload=True, autoload_with=engine)
 # film = sqlalchemy.Table('film', metadata, autoload=True, autoload_with=engine)
 # film_actor = sqlalchemy.Table('film_actor', metadata, autoload=True, \
 #     autoload_with=engine)
-
 
 # join_actor_film_actor = actor.join(film_actor, film_actor.columns.actor_id == \
 #     actor.columns.actor_id)
