@@ -24,13 +24,30 @@ connection = engine.connect()
 metadata = sqlalchemy.MetaData()
 
 # Select all the actors with the first name of your choice
-actor_table = sqlalchemy.Table('actor', metadata, autoload=True, autoload_with=engine)
+# actor_table = sqlalchemy.Table('actor', metadata, autoload=True, autoload_with=engine)
 
-query = sqlalchemy.select(actor_table).where(actor_table.columns.first_name == 'Matthew')
-result_proxy = connection.execute(query)
+# query = sqlalchemy.select(actor_table).where(actor_table.columns.first_name == 'Matthew')
+# result_proxy = connection.execute(query)
 
-for actor in result_proxy:
-    print(actor)
+# for actor in result_proxy:
+#     print(actor)
 
 
 # Select all the actors and the films they have been in
+
+actor = sqlalchemy.Table('actor', metadata, autoload=True, autoload_with=engine)
+
+film = sqlalchemy.Table('film', metadata, autoload=True, autoload_with=engine)
+
+film_actor = sqlalchemy.Table('film_actor', metadata, autoload=True, autoload_with=engine)
+
+
+join_statement = actor.join(film_actor, film_actor.columns.actor_id == \
+    actor.columns.actor_id).join(film, film.columns.film_id == film_actor.columns.film_id)
+
+query = sqlalchemy.select([film.columns.film_id, film.columns.title, actor.columns.first_name, \
+    actor.columns.last_name]).select_from(join_statement)
+
+result_proxy = connection.execute(query)
+result_set = result_proxy.fetchall()
+pprint(result_set)
