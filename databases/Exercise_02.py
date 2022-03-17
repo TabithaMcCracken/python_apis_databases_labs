@@ -18,6 +18,7 @@ Consider each of the tasks below as a separate database query. Using SQLAlchemy,
 from pprint import pprint
 from unicodedata import category
 import sqlalchemy
+import pandas
 
 engine = sqlalchemy.create_engine('mysql+pymysql://username:password@localhost/sakila')
 connection = engine.connect()

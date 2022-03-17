@@ -1,7 +1,7 @@
 from turtle import clear
 import sqlalchemy
 from pprint import pprint
-from actor import Actor
+from actor2 import Actor
 
 engine = sqlalchemy.create_engine('mysql+pymysql://username:password@localhost/sakila')
 connection = engine.connect()
