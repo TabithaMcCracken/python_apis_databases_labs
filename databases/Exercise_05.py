@@ -12,3 +12,9 @@ NOTE: If you run this several times you will be saving the same information in t
 To prevent this, you should add a check to see if the record already exists before inserting it.
 
 '''
+
+# We Need:
+# Function to get the users and tasks from the url
+# Create tables
+# Check to see if data already exists in the tables
+# Put data in tables

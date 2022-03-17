@@ -1,4 +1,3 @@
-from turtle import clear
 import sqlalchemy
 from pprint import pprint
 from actor2 import Actor
@@ -20,6 +19,33 @@ for result in result_proxy:
 for actor in actor_list:
     print(actor)
 
+
+# Print all results first and last name
+# for result in result_proxy:
+#     print(f"First Name: {result['first_name']}")
+#     print(f"Last Name: {result['last_name']}")
+
+# Print in an f string
+# result = result_proxy.fetchone()
+# print(f"First Name: {result['first_name']}")
+# print(f"Last Name: {result['last_name']}")
+
+# Print first record
+# result = result_proxy.fetchone()
+# print(result.keys())
+
+# Iterate over list
+# for actor in actor_list:
+#     print(actor)
+
+# Print first record
+# result = result_proxy.fetchone()
+# print(result)
+
+# Print all in the result set
+# for result in result_proxy:
+#    print(result)
+
 # Delete 
 # new_table = sqlalchemy.Table('new_table', metadata, autoload=True, autoload_with=engine)
 # query = sqlalchemy.delete(new_table).where(new_table.columns.salary < 100000.00)
@@ -29,7 +55,6 @@ for actor in actor_list:
 # new_table = sqlalchemy.Table('new_table', metadata, autoload=True, autoload_with=engine)
 # query = sqlalchemy.update(new_table).values(salary=100000.00).where(new_table.columns.id == 1)
 # result_proxy = connection.execute(query)
-
 
 # Adding multiple entries into a database sakila
 # query = sqlalchemy.insert(new_table)
@@ -47,7 +72,6 @@ for actor in actor_list:
 #     actor.columns.actor_id)
 # join_statement = join_actor_film_actor.join(film, film.columns.film_id == \
 #     film_actor.columns.film_id)
-
 # query = sqlalchemy.select([film.columns.title, actor.columns.first_name]).select_from(join_statement)
 
 # result_proxy = connection.execute(query)

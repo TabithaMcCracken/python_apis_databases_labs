@@ -16,3 +16,12 @@ The more dynamic the application, the better!
 
 
 '''
+# We Need to:
+# Create a new database (maybe drop the old one if it already exists)
+# Create functions for each task: create tables, inser data, update data, select data, delete data, use a join
+# Create a function to ask user which task to copmlete
+# Call the which task function
+# While loop to ask user if they want to complete another task, calls which task functino again or ends the session
+
+
+import mysql.connector
