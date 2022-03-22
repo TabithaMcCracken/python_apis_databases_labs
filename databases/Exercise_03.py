@@ -5,10 +5,10 @@ if the length of the movie is more than 150.
 '''
 
 from pprint import pprint
-from unicodedata import category
+from secret import password
 import sqlalchemy
 
-engine = sqlalchemy.create_engine('mysql+pymysql://username:password@localhost/sakila')
+engine = sqlalchemy.create_engine(f'mysql+pymysql://root:{password}@localhost/sakila')
 connection = engine.connect()
 metadata = sqlalchemy.MetaData()
 

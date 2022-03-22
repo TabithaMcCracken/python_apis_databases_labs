@@ -7,10 +7,10 @@ Using the provided database schema, write the necessary code to print informatio
 '''
 
 from pprint import pprint
-from unicodedata import category
 import sqlalchemy
+from secret import password
 
-engine = sqlalchemy.create_engine('mysql+pymysql://username:password@localhost/sakila')
+engine = sqlalchemy.create_engine(f'mysql+pymysql://root:{password}@localhost/sakila')
 connection = engine.connect()
 metadata = sqlalchemy.MetaData()
 

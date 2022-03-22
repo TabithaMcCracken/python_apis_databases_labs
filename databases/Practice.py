@@ -1,8 +1,8 @@
 import sqlalchemy
 from pprint import pprint
 from actor2 import Actor
-
-engine = sqlalchemy.create_engine('mysql+pymysql://username:password@localhost/sakila')
+from secret import password
+engine = sqlalchemy.create_engine(f'mysql+pymysql://root:{password}@localhost/sakila')
 connection = engine.connect()
 metadata = sqlalchemy.MetaData()
 

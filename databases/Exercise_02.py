@@ -16,11 +16,10 @@ Consider each of the tasks below as a separate database query. Using SQLAlchemy,
 '''
 
 from pprint import pprint
-from unicodedata import category # Do I need this?
+from secret import password
 import sqlalchemy
-import pandas # This isn't working
 
-engine = sqlalchemy.create_engine('mysql+pymysql://username:password@localhost/sakila')
+engine = sqlalchemy.create_engine(f'mysql+pymysql://root:{password}@localhost/sakila')
 connection = engine.connect()
 metadata = sqlalchemy.MetaData()
 
@@ -90,11 +89,18 @@ film_actor = sqlalchemy.Table('film_actor', metadata, autoload=True, autoload_wi
 join_statement = actor.join(film_actor, film_actor.columns.actor_id == \
     actor.columns.actor_id).join(film, film.columns.film_id == film_actor.columns.film_id)
 
-query = sqlalchemy.select([film.columns.film_id, film.columns.title, actor.columns.first_name, \
-    actor.columns.last_name]).select_from(join_statement)
+query = sqlalchemy.select(
+    [
+        #film.columns.film_id,
+        #film.columns.title,
+        #actor.columns.first_name,
+        #actor.columns.last_name
+        sqlalchemy.func.count(actor.columns.last_name),
+        actor.columns.last_name
+    ]
+    ).select_from(join_statement).group_by(actor.columns.last_name)
 
 result_proxy = connection.execute(query)
 result_set = result_proxy.fetchall()
 
-grouped_result_set = result_set.groupby('title')
-pprint(grouped_result_set)
+pprint(result_set)

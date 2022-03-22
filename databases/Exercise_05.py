@@ -18,3 +18,8 @@ To prevent this, you should add a check to see if the record already exists befo
 # Create tables
 # Check to see if data already exists in the tables
 # Put data in tables
+
+from pprint import pprint
+import sqlalchemy
+from secret import password
+

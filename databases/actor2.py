@@ -6,5 +6,5 @@ class Actor:
         self.last_name = last_name
         self.last_update = last_update
 
-    def _str_(self):
+    def __str__(self):
         return f"The actor {self.first_name} {self.last_name} was udpated {self.last_update}"
