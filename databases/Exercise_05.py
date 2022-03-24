@@ -25,6 +25,9 @@ from secret import password
 import requests
 import json
 
+# Create a new table
+
+
 # Get user info
 email_list = []
 base_url = "http://demo.codingnomads.co:8080/tasks_api/users"
@@ -50,6 +53,24 @@ def make_email_list():
 make_email_list() # Call the function
 print(final_email_list)
 print(type(final_email_list))
+
+#Get data into a table
+new_products = [ {'product_id':1, 'product_name':'Sleigh Sign', 'product_desc':"5x7 \
+                    Sleigh sign: It's Lovely Weather for a slegih ride together", 'product_price':20.00},
+                {'product_id':2, 'product_name':'Gold Tree', 'product_desc':"9inch \
+                    Christmas tree: O Come Let Us Adore Him", 'product_price':20.00},
+                {'product_id':3, 'product_name':'Small Spoons Game', 'product_desc': \
+                    "Six player spoons and LRC game", 'product_price':40.00}
+                ]
+result_proxy = connection.execute(query, final_email_list)
+
+location = sqlalchemy.Table('location', metadata, autoload=True, autoload_with=engine)
+query = sqlalchemy.insert(location)
+locations = [ {'location_id':1, 'location_name':'Home', 'tax_rate':6.25},
+            {'location_id':2, 'location_name':'Aurora', 'tax_rate':8.00},
+            {'location_id':3, 'location_name':'South Dakota', 'tax_rate':0.00}
+            ]
+result_proxy = connection.execute(query, locations)
 
 
 # # Function to get task data
