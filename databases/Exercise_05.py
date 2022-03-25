@@ -41,36 +41,24 @@ parsed_json = json.loads(data)
 print(parsed_json)
 print(type(parsed_json))
 
-final_email_list = [] # Empty list for emails
+user_list = [] # Empty list for emails
 
 def make_email_list():
     user_data = parsed_json['data'] # accessing only the 'data' dict
     for email_data in user_data: # going through all the data in the 'data' dict
         #email_access = email_data['email'] # accessing only the 'email' data
-        final_email_list.append(email_data) # Changed 'email_access' to 'email_data'
+        user_list.append(email_data) # Changed 'email_access' to 'email_data'
 
 
 make_email_list() # Call the function
-print(final_email_list)
-print(type(final_email_list))
+print(user_list)
+print(type(user_list))
 
 #Get data into a table
-new_products = [ {'product_id':1, 'product_name':'Sleigh Sign', 'product_desc':"5x7 \
-                    Sleigh sign: It's Lovely Weather for a slegih ride together", 'product_price':20.00},
-                {'product_id':2, 'product_name':'Gold Tree', 'product_desc':"9inch \
-                    Christmas tree: O Come Let Us Adore Him", 'product_price':20.00},
-                {'product_id':3, 'product_name':'Small Spoons Game', 'product_desc': \
-                    "Six player spoons and LRC game", 'product_price':40.00}
-                ]
-result_proxy = connection.execute(query, final_email_list)
 
-location = sqlalchemy.Table('location', metadata, autoload=True, autoload_with=engine)
-query = sqlalchemy.insert(location)
-locations = [ {'location_id':1, 'location_name':'Home', 'tax_rate':6.25},
-            {'location_id':2, 'location_name':'Aurora', 'tax_rate':8.00},
-            {'location_id':3, 'location_name':'South Dakota', 'tax_rate':0.00}
-            ]
-result_proxy = connection.execute(query, locations)
+users = sqlalchemy.Table('users', metadata, autoload=True, autoload_with=engine)
+query = sqlalchemy.insert(users)
+result_proxy = connection.execute(query, user_list)
 
 
 # # Function to get task data
