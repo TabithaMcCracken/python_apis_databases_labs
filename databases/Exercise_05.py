@@ -13,6 +13,7 @@ To prevent this, you should add a check to see if the record already exists befo
 
 '''
 
+
 # We Need:
 # Function to get the users and tasks from the url
 # Create tables
@@ -59,6 +60,10 @@ print(type(user_list))
 users = sqlalchemy.Table('users', metadata, autoload=True, autoload_with=engine)
 query = sqlalchemy.insert(users)
 result_proxy = connection.execute(query, user_list)
+
+
+
+
 
 
 # # Function to get task data
