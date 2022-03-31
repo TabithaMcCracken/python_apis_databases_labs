@@ -25,8 +25,11 @@ import sqlalchemy
 from secret import password
 import requests
 import json
+import pymysql
 
-# Create a new table
+engine = sqlalchemy.create_engine(f'mysql+pymysql://root:{password}@localhost/taskDB')
+connection = engine.connect()
+metadata = sqlalchemy.MetaData()    
 
 
 # Get user info
