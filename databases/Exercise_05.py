@@ -32,38 +32,38 @@ connection = engine.connect()
 metadata = sqlalchemy.MetaData()    
 
 
-# # Get user data from API
-# email_list = []
-# base_url = "http://demo.codingnomads.co:8080/tasks_api/users"
-# # Get the data
-# request = requests.get(base_url)
-# data = request.text
-# print(type(data)) # data is a string
+# Get user data from API
+email_list = []
+base_url = "http://demo.codingnomads.co:8080/tasks_api/users"
+# Get the data
+request = requests.get(base_url)
+data = request.text
+print(type(data)) # data is a string
 
-# # Turn it from json into a dict
-# parsed_json = json.loads(data)
-# print(parsed_json)
-# print(type(parsed_json))
+# Turn it from json into a dict
+parsed_json = json.loads(data)
+print(parsed_json)
+print(type(parsed_json))
 
-# user_list = [] # Empty list for emails
+user_list = [] # Empty list for emails
 
-# def make_email_list():
-#     user_data = parsed_json['data'] # accessing only the 'data' dict
-#     for email_data in user_data: # going through all the data in the 'data' dict
-#         #email_access = email_data['email'] # accessing only the 'email' data
-#         user_list.append(email_data) # Changed 'email_access' to 'email_data'
-
-
-# make_email_list() # Call the function
-# print(user_list)
-# print(type(user_list))
+def make_email_list():
+    user_data = parsed_json['data'] # accessing only the 'data' dict
+    for email_data in user_data: # going through all the data in the 'data' dict
+        #email_access = email_data['email'] # accessing only the 'email' data
+        user_list.append(email_data) # Changed 'email_access' to 'email_data'
 
 
-# # Put the API data into the 'users' table
+make_email_list() # Call the function
+print(user_list)
+print(type(user_list))
 
-# users = sqlalchemy.Table('users', metadata, autoload=True, autoload_with=engine)
-# query = sqlalchemy.insert(users)
-# result_proxy = connection.execute(query, user_list)
+
+# Put the API data into the 'users' table
+
+users = sqlalchemy.Table('users', metadata, autoload=True, autoload_with=engine)
+query = sqlalchemy.insert(users)
+result_proxy = connection.execute(query, user_list)
 
 
 # Get data already in the 'users' table
@@ -106,3 +106,11 @@ pprint(result_set)
 
 
 # view_tasks()
+
+actor_table = sqlalchemy.Table('actor', metadata, autoload=True, autoload_with=engine)
+
+query = sqlalchemy.select(actor_table).where(actor_table.columns.first_name == 'Matthew')
+result_proxy = connection.execute(query)
+
+for actor in result_proxy:
+    print(actor)
