@@ -25,7 +25,7 @@ import sqlalchemy
 from secret import password
 import requests
 import json
-import pymysql
+# import pymysql
 
 engine = sqlalchemy.create_engine(f'mysql+pymysql://root:{password}@localhost/taskDB')
 connection = engine.connect()
@@ -59,21 +59,21 @@ print(user_list)
 print(type(user_list))
 
 
-# Put the API data into the 'users' table
+# # Put the API data into the 'users' table
 
-users = sqlalchemy.Table('users', metadata, autoload=True, autoload_with=engine)
-query = sqlalchemy.insert(users)
-result_proxy = connection.execute(query, user_list)
+# users = sqlalchemy.Table('users', metadata, autoload=True, autoload_with=engine)
+# query = sqlalchemy.insert(users)
+# result_proxy = connection.execute(query, user_list)
 
 
-# Get data already in the 'users' table
+# # Get data already in the 'users' table
 
-users_table = sqlalchemy.Table('users', metadata, autoload=True, autoload_with=engine)
+# users_table = sqlalchemy.Table('users', metadata, autoload=True, autoload_with=engine)
 
-query = sqlalchemy.select([users_table])
-result_proxy = connection.execute(query)
-result_set = result_proxy.fetchall()
-pprint(result_set)
+# query = sqlalchemy.select([users_table])
+# result_proxy = connection.execute(query)
+# result_set = result_proxy.fetchall()
+# pprint(result_set)
 
 
 # # Function to get task data
