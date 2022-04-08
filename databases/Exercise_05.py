@@ -15,17 +15,18 @@ To prevent this, you should add a check to see if the record already exists befo
 
 
 # We Need:
-# Function to get the users and tasks from the url
-# Create tables
-# Check to see if data already exists in the tables
-# Put data in tables
+# Get users data from the API+
+# Get data already in the 'users' table of the database
+# Compare data, create new list with new data
+# Add new data to the database
+
 
 from pprint import pprint
 import sqlalchemy
 from secret import password
 import requests
 import json
-# import pymysql
+import pymysql
 
 engine = sqlalchemy.create_engine(f'mysql+pymysql://root:{password}@localhost/taskDB')
 connection = engine.connect()
@@ -42,21 +43,35 @@ print(type(data)) # data is a string
 
 # Turn it from json into a dict
 parsed_json = json.loads(data)
-print(parsed_json)
-print(type(parsed_json))
+# print(parsed_json)
+# print(type(parsed_json)) # data is dict
 
 user_list = [] # Empty list for emails
 
-def make_email_list():
+def make_user_list():
     user_data = parsed_json['data'] # accessing only the 'data' dict
-    for email_data in user_data: # going through all the data in the 'data' dict
+    for data in user_data: # going through all the data in the 'data' dict
         #email_access = email_data['email'] # accessing only the 'email' data
-        user_list.append(email_data) # Changed 'email_access' to 'email_data'
+        user_list.append(data) # Changed 'email_access' to 'email_data'
 
 
-make_email_list() # Call the function
-print(user_list)
-print(type(user_list))
+make_user_list() # Call the function
+# pprint(user_list)
+# print(type(user_list)) # data is list
+
+
+# Get data already in the 'users' table
+
+users_table = sqlalchemy.Table('users', metadata, autoload=True, autoload_with=engine)
+
+query = sqlalchemy.select([users_table])
+result_proxy = connection.execute(query)
+result_set = result_proxy.fetchall()
+# pprint(result_set)
+print(type(result_set))
+
+# new_list = list(set(user_list).difference(result_set))
+# print(new_list)
 
 
 # # Put the API data into the 'users' table
@@ -66,14 +81,7 @@ print(type(user_list))
 # result_proxy = connection.execute(query, user_list)
 
 
-# # Get data already in the 'users' table
 
-# users_table = sqlalchemy.Table('users', metadata, autoload=True, autoload_with=engine)
-
-# query = sqlalchemy.select([users_table])
-# result_proxy = connection.execute(query)
-# result_set = result_proxy.fetchall()
-# pprint(result_set)
 
 
 # # Function to get task data
@@ -107,10 +115,10 @@ print(type(user_list))
 
 # view_tasks()
 
-actor_table = sqlalchemy.Table('actor', metadata, autoload=True, autoload_with=engine)
+# actor_table = sqlalchemy.Table('actor', metadata, autoload=True, autoload_with=engine)
 
-query = sqlalchemy.select(actor_table).where(actor_table.columns.first_name == 'Matthew')
-result_proxy = connection.execute(query)
+# query = sqlalchemy.select(actor_table).where(actor_table.columns.first_name == 'Matthew')
+# result_proxy = connection.execute(query)
 
-for actor in result_proxy:
-    print(actor)
+# for actor in result_proxy:
+#     print(actor)
