@@ -74,11 +74,11 @@ print(type(result_set))
 # print(new_list)
 
 
-# # Put the API data into the 'users' table
+# Put the API data into the 'users' table
 
-# users = sqlalchemy.Table('users', metadata, autoload=True, autoload_with=engine)
-# query = sqlalchemy.insert(users)
-# result_proxy = connection.execute(query, user_list)
+users = sqlalchemy.Table('users', metadata, autoload=True, autoload_with=engine)
+query = sqlalchemy.insert(users)
+result_proxy = connection.execute(query, user_list)
 
 
 
