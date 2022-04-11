@@ -39,7 +39,7 @@ base_url = "http://demo.codingnomads.co:8080/tasks_api/users"
 # Get the data
 request = requests.get(base_url)
 data = request.text
-print(type(data)) # data is a string
+# print(type(data)) # data is a string
 
 # Turn it from json into a dict
 parsed_json = json.loads(data)
@@ -70,15 +70,21 @@ result_set = result_proxy.fetchall()
 # pprint(result_set)
 print(type(result_set))
 
-# new_list = list(set(user_list).difference(result_set))
-# print(new_list)
+# new_dict = []
+
+# for row in result_set:
+#     for user in user_list:
+#         if user != row:
+#             new_dict.append(user)
+
+# pprint(new_dict)
 
 
 # Put the API data into the 'users' table
 
-users = sqlalchemy.Table('users', metadata, autoload=True, autoload_with=engine)
-query = sqlalchemy.insert(users)
-result_proxy = connection.execute(query, user_list)
+# users = sqlalchemy.Table('users', metadata, autoload=True, autoload_with=engine)
+# query = sqlalchemy.insert(users)
+# result_proxy = connection.execute(query, user_list)
 
 
 
