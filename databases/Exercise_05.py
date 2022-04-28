@@ -14,7 +14,7 @@ To prevent this, you should add a check to see if the record already exists befo
 '''
 
 
-# We Need:
+# We Need To:
 # Get users data from the API+
 # Get data already in the 'users' table of the database
 # Compare data, create new list with new data
@@ -67,7 +67,7 @@ users_table = sqlalchemy.Table('users', metadata, autoload=True, autoload_with=e
 query = sqlalchemy.select([users_table])
 result_proxy = connection.execute(query)
 result_set = result_proxy.fetchall()
-# pprint(result_set)
+pprint(result_set)
 print(type(result_set))
 
 # new_dict = []

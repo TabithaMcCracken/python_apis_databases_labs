@@ -51,7 +51,6 @@ metadata = sqlalchemy.MetaData()
 #     sqlalchemy.Column('location_id', sqlalchemy.Integer())
 #     #sqlalchemy.ForeignKeyConstraint(['location_id'],['location.location_id'])- Doesn't work
 #     )
-
 # metadata.create_all(engine)
 
 # Insert Data in each table 
@@ -143,6 +142,8 @@ result_proxy = connection.execute(query)
 result_set = result_proxy.fetchall()
 pprint(result_set)
 
+
+# Other ideas for usage
 # # Function asking which task to complete
 # def which_task():
 #     task = int(input(
